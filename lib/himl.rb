@@ -1,6 +1,4 @@
-require "himl/version"
+# frozen_string_literal: true
 
-module Himl
-  class Error < StandardError; end
-  # Your code goes here...
-end
+require 'himl/version'
+require_relative 'himl/parser'

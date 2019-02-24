@@ -1,11 +1,21 @@
-require "test_helper"
+# frozen_string_literal: true
 
-class HimlTest < Minitest::Test
-  def test_that_it_has_a_version_number
-    refute_nil ::Himl::VERSION
+require 'test_helper'
+
+class HimlTest < Test::Unit::TestCase
+  private def parse(template)
+    parser = Himl::Parser.new
+    parser.call(template)
+    parser.to_html
   end
 
-  def test_it_does_something_useful
-    assert false
+  def test_single_open_and_close
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<div>
+</div>
+HTML
+<div>
+</div>
+TEMPLATE
   end
 end
