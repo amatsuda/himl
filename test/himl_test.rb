@@ -18,4 +18,13 @@ HTML
 </div>
 TEMPLATE
   end
+
+  def test_single_open
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<div>
+</div>
+HTML
+<div>
+TEMPLATE
+  end
 end
