@@ -31,19 +31,25 @@ module Himl
 
       def close_tags
         while @tags.any?
-          @end_tags << @tags.last.end_tag
+          @end_tags << [current_line, @tags.last.end_tag]
           @tags.pop
         end
       end
 
       def weave_end_tags
-        @end_tags.reverse_each do |tag|
-          @lines.append tag
+        @end_tags.reverse_each do |index, tag|
+          @lines.insert index, tag
         end
       end
 
       def verify!
         raise SyntaxError if @tags.any?
+      end
+
+      private
+
+      def current_line
+        (context.column == 1) && (context.line > 1) ? context.line - 1 : context.line
       end
     end
 
