@@ -28,13 +28,15 @@ module Himl
         lines = @original_template.lines
 
         @end_tags.reverse_each do |index, tag|
-          lines.insert index, tag
+          lines.insert index - 1, tag
         end
 
         lines.join
       end
 
       def start_element(name, *)
+        close_tags unless name == ROOT_NODE
+
         @tags << Tag.new(name, current_indentation)
       end
 
@@ -45,7 +47,7 @@ module Himl
       end
 
       def close_tags
-        while @tags.last.name != ROOT_NODE
+        while (@tags.last.name != ROOT_NODE) && (current_indentation <= @tags.last.indentation)
           @end_tags << [current_line, @tags.last.end_tag]
           @tags.pop
         end

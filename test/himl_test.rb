@@ -52,4 +52,19 @@ HTML
 <b>
 TEMPLATE
   end
+
+  def test_auto_close_on_dedent
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<a>
+  <b>
+  </b>
+</a>
+<c>
+</c>
+HTML
+<a>
+  <b>
+<c>
+TEMPLATE
+  end
 end
