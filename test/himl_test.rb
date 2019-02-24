@@ -39,4 +39,17 @@ HTML
   <b>
 TEMPLATE
   end
+
+  def test_open_close_open
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<a>
+</a>
+<b>
+</b>
+HTML
+<a>
+</a>
+<b>
+TEMPLATE
+  end
 end
