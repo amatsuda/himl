@@ -67,4 +67,18 @@ HTML
 <c>
 TEMPLATE
   end
+
+  def test_erb
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<a>
+  <%= 'hello' %>
+  <b>
+  </b>
+</a>
+HTML
+<a>
+  <%= 'hello' %>
+  <b>
+TEMPLATE
+  end
 end

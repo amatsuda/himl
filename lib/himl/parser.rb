@@ -12,11 +12,14 @@ module Himl
       end
 
       ROOT_NODE = 'THE_HIML_ROOT_NODE'
+      ERB_TAG = 'HIML_ERB_TAG'
+      ERB_TAG_REGEXP = /<%(?:=|==|-|#|%)?(.*?)(?:[-=])?%>/
 
       attr_accessor :context
 
       def initialize(template)
         @original_template, @tags, @end_tags = template, [], []
+        template = template.gsub(ERB_TAG_REGEXP, "<#{ERB_TAG}>\\1</#{ERB_TAG}>")
         @lines = "<#{ROOT_NODE}>\n#{template}</#{ROOT_NODE}>\n".lines
       end
 
