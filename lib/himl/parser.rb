@@ -11,6 +11,8 @@ module Himl
         end
       end
 
+      attr_accessor :context
+
       def initialize(template)
         @lines, @tags, @end_tags = template.lines, [], []
       end
@@ -59,7 +61,9 @@ module Himl
     def parse_template(template)
       @document = Document.new template
       @parser = Nokogiri::XML::SAX::Parser.new(@document)
-      @parser.parse template
+      @parser.parse template do |ctx|
+        @document.context = ctx
+      end
 
       @document.close_tags
 
