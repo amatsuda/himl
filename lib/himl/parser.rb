@@ -5,9 +5,9 @@ require 'nokogiri'
 module Himl
   class Parser
     class Document < Nokogiri::XML::SAX::Document
-      Tag = Struct.new(:name) do
+      Tag = Struct.new(:name, :indentation) do
         def end_tag
-          "</#{name}>\n"
+          "#{' ' * indentation}</#{name}>\n"
         end
       end
 
@@ -22,7 +22,7 @@ module Himl
       end
 
       def start_element(name, *)
-        @tags << Tag.new(name)
+        @tags << Tag.new(name, current_indentation)
       end
 
       def end_element(name)
@@ -47,6 +47,11 @@ module Himl
       end
 
       private
+
+      def current_indentation
+        line = @lines[current_line - 1]
+        line.slice(0, context.column).rindex('<')
+      end
 
       def current_line
         (context.column == 1) && (context.line > 1) ? context.line - 1 : context.line

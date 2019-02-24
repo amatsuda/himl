@@ -27,4 +27,16 @@ HTML
 <div>
 TEMPLATE
   end
+
+  def test_nested_opens
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<a>
+  <b>
+  </b>
+</a>
+HTML
+<a>
+  <b>
+TEMPLATE
+  end
 end
