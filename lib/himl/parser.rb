@@ -5,15 +5,20 @@ require 'nokogiri'
 module Himl
   class Parser
     class Document < Nokogiri::XML::SAX::Document
-      Tag = Struct.new(:name, :indentation) do
+      Tag = Struct.new(:name, :indentation, :has_block) do
         def end_tag
           "#{' ' * indentation}</#{name}>\n"
+        end
+
+        def erb_tag?
+          name == ERB_TAG
         end
       end
 
       ROOT_NODE = 'THE_HIML_ROOT_NODE'
       ERB_TAG = 'HIML_ERB_TAG'
       ERB_TAG_REGEXP = /<%(?:=|==|-|#|%)?(.*?)(?:[-=])?%>/
+      BLOCK_REGEXP = /\s*((\s+|\))do|\{)(\s*\|[^|]*\|)?\s*\Z/
 
       attr_accessor :context
 
@@ -48,6 +53,11 @@ module Himl
         return if last_tag.name == ROOT_NODE
 
         @tags.pop if name == last_tag.name
+      end
+
+      def characters(string)
+        erb_tag = @tags.reverse_each.detect(&:erb_tag?)
+        erb_tag.has_block = true if erb_tag && (BLOCK_REGEXP =~ string)
       end
 
       def close_tags
