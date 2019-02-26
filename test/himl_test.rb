@@ -90,4 +90,13 @@ HTML
 <% @users.each do |user| %>
 TEMPLATE
   end
+
+  def test_erb_with_curly_block_without_end
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<% @users.each {|user| %>
+<% } %>
+HTML
+<% @users.each {|user| %>
+TEMPLATE
+  end
 end

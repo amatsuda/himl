@@ -5,10 +5,10 @@ require 'nokogiri'
 module Himl
   class Parser
     class Document < Nokogiri::XML::SAX::Document
-      Tag = Struct.new(:name, :indentation, :has_block) do
+      Tag = Struct.new(:name, :indentation, :block_end) do
         def end_tag
-          if has_block
-            "#{' ' * indentation}<% end %>\n"
+          if has_block?
+            "#{' ' * indentation}<% #{block_end} %>\n"
           else
             "#{' ' * indentation}</#{name}>\n"
           end
@@ -16,6 +16,19 @@ module Himl
 
         def erb_tag?
           name == ERB_TAG
+        end
+
+        def has_block?
+          block_end
+        end
+
+        def block_start=(start)
+          self.block_end = case start
+          when 'do'
+            'end'
+          when '{'
+            '}'
+          end
         end
       end
 
@@ -47,7 +60,7 @@ module Himl
       end
 
       def start_element(name, *)
-        close_tags unless (name == ROOT_NODE) || ((name == ERB_TAG) && @tags.last.has_block)
+        close_tags unless (name == ROOT_NODE) || ((name == ERB_TAG) && @tags.last.has_block?)
 
         @tags << Tag.new(name, current_indentation)
       end
@@ -57,12 +70,14 @@ module Himl
         return if last_tag.name == ROOT_NODE
 
         @tags.pop if name == last_tag.name
-        @tags << Tag.new(nil, last_tag.indentation, last_tag.has_block) if (last_tag.name == ERB_TAG) && last_tag.has_block
+        @tags << Tag.new(nil, last_tag.indentation, last_tag.block_end) if (last_tag.name == ERB_TAG) && last_tag.has_block?
       end
 
       def characters(string)
         erb_tag = @tags.reverse_each.detect(&:erb_tag?)
-        erb_tag.has_block = true if erb_tag && (BLOCK_REGEXP =~ string)
+        if erb_tag && (match = BLOCK_REGEXP.match(string))
+          erb_tag.block_start = match[1].strip
+        end
       end
 
       def close_tags
