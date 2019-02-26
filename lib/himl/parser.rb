@@ -7,7 +7,11 @@ module Himl
     class Document < Nokogiri::XML::SAX::Document
       Tag = Struct.new(:name, :indentation, :has_block) do
         def end_tag
-          "#{' ' * indentation}</#{name}>\n"
+          if has_block
+            "#{' ' * indentation}<% end %>\n"
+          else
+            "#{' ' * indentation}</#{name}>\n"
+          end
         end
 
         def erb_tag?
@@ -53,6 +57,7 @@ module Himl
         return if last_tag.name == ROOT_NODE
 
         @tags.pop if name == last_tag.name
+        @tags << Tag.new(nil, last_tag.indentation, last_tag.has_block) if (last_tag.name == ERB_TAG) && last_tag.has_block
       end
 
       def characters(string)

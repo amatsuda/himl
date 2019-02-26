@@ -81,4 +81,13 @@ HTML
   <b>
 TEMPLATE
   end
+
+  def test_erb_with_block_without_end
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<% @users.each do |user| %>
+<% end %>
+HTML
+<% @users.each do |user| %>
+TEMPLATE
+  end
 end
