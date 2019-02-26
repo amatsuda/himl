@@ -44,9 +44,10 @@ module Himl
       end
 
       def end_element(name)
-        return if @tags.last.name == ROOT_NODE
+        last_tag = @tags.last
+        return if last_tag.name == ROOT_NODE
 
-        @tags.pop if name == @tags.last.name
+        @tags.pop if name == last_tag.name
       end
 
       def close_tags
