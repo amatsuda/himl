@@ -43,7 +43,7 @@ module Himl
       end
 
       def start_element(name, *)
-        close_tags unless name == ROOT_NODE
+        close_tags unless (name == ROOT_NODE) || ((name == ERB_TAG) && @tags.last.has_block)
 
         @tags << Tag.new(name, current_indentation)
       end
