@@ -99,4 +99,24 @@ HTML
 <% @users.each {|user| %>
 TEMPLATE
   end
+
+  def test_erb_with_block_with_end
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<% @users.each do |user| %>
+<% end %>
+HTML
+<% @users.each do |user| %>
+<% end %>
+TEMPLATE
+  end
+
+  def test_erb_with_curly_block_with_end
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<% @users.each {|user| %>
+<% } %>
+HTML
+<% @users.each {|user| %>
+<% } %>
+TEMPLATE
+  end
 end

@@ -32,6 +32,9 @@ module Himl
         end
       end
 
+      ErbEndMarker = Class.new(Tag)
+      ErbBlockStartMarker = Class.new(Tag)
+
       ROOT_NODE = 'THE_HIML_ROOT_NODE'
       ERB_TAG = 'HIML_ERB_TAG'
       ERB_TAG_REGEXP = /<%(?:=|==|-|#|%)?(.*?)(?:[-=])?%>/
@@ -69,11 +72,24 @@ module Himl
         last_tag = @tags.last
         return if last_tag.name == ROOT_NODE
 
+        if (name == ERB_TAG) && last_tag.is_a?(ErbEndMarker)
+          raise SyntaxError if last_tag.indentation != @tags[-2].indentation
+          @tags.pop
+          @tags.pop
+        end
+
         @tags.pop if name == last_tag.name
-        @tags << Tag.new(nil, last_tag.indentation, last_tag.block_end) if (last_tag.name == ERB_TAG) && last_tag.has_block?
+        @tags << ErbBlockStartMarker.new(nil, last_tag.indentation, last_tag.block_end) if (last_tag.name == ERB_TAG) && last_tag.has_block?
       end
 
       def characters(string)
+        if (last_tag = @tags.last).erb_tag?
+          if string =~ / *(end|}) */
+            @tags.pop
+            @tags << ErbEndMarker.new(nil, last_tag.indentation)
+          end
+        end
+
         erb_tag = @tags.reverse_each.detect(&:erb_tag?)
         if erb_tag && (match = BLOCK_REGEXP.match(string))
           erb_tag.block_start = match[1].strip
