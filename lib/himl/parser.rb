@@ -82,7 +82,7 @@ module Himl
           if ((last_tag.indentation == current_indentation) || (last_tag.line == current_line))
             @tags.pop
           else
-            raise SyntaxError, "end tag indentation mismatch for <#{name}>"
+            raise SyntaxError, "end tag indentation mismatch for <#{name}> at line: #{current_line}, column: #{current_indentation}"
           end
         end
         @tags << ErbBlockStartMarker.new(nil, last_tag.indentation, last_tag.line, last_tag.block_end) if (last_tag.name == ERB_TAG) && last_tag.has_block?
