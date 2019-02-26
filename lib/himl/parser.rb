@@ -5,7 +5,7 @@ require 'nokogiri'
 module Himl
   class Parser
     class Document < Nokogiri::XML::SAX::Document
-      Tag = Struct.new(:name, :indentation, :block_end) do
+      Tag = Struct.new(:name, :indentation, :line, :block_end) do
         def end_tag
           if has_block?
             "#{' ' * indentation}<% #{block_end} %>\n"
@@ -65,7 +65,7 @@ module Himl
       def start_element(name, *)
         close_tags unless (name == ROOT_NODE) || ((name == ERB_TAG) && @tags.last.has_block?)
 
-        @tags << Tag.new(name, current_indentation)
+        @tags << Tag.new(name, current_indentation, current_line)
       end
 
       def end_element(name)
@@ -79,20 +79,20 @@ module Himl
         end
 
         if name == last_tag.name
-          if last_tag.indentation == current_indentation
+          if ((last_tag.indentation == current_indentation) || (last_tag.line == current_line))
             @tags.pop
           else
             raise SyntaxError, "end tag indentation mismatch for <#{name}>"
           end
         end
-        @tags << ErbBlockStartMarker.new(nil, last_tag.indentation, last_tag.block_end) if (last_tag.name == ERB_TAG) && last_tag.has_block?
+        @tags << ErbBlockStartMarker.new(nil, last_tag.indentation, last_tag.line, last_tag.block_end) if (last_tag.name == ERB_TAG) && last_tag.has_block?
       end
 
       def characters(string)
         if (last_tag = @tags.last).erb_tag?
           if string =~ / *(end|}) */
             @tags.pop
-            @tags << ErbEndMarker.new(nil, last_tag.indentation)
+            @tags << ErbEndMarker.new(nil, last_tag.indentation, last_tag.line)
           end
         end
 

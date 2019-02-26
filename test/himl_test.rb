@@ -68,6 +68,14 @@ HTML
 TEMPLATE
   end
 
+  def test_close_in_same_line
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<a>hello</a>
+HTML
+<a>hello</a>
+TEMPLATE
+  end
+
   def test_erb
     assert_equal <<-HTML, parse(<<-TEMPLATE)
 <a>
