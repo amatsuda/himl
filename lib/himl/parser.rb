@@ -90,7 +90,7 @@ module Himl
 
       def characters(string)
         if (last_tag = @tags.last).erb_tag?
-          if string =~ / *(end|}) */
+          if string =~ /\A *(end|}) *\z/
             @tags.pop
             @tags << ErbEndMarker.new(nil, last_tag.indentation, last_tag.line)
           end
