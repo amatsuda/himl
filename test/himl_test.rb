@@ -159,4 +159,14 @@ HTML
 <div id="c">
 TEMPLATE
   end
+
+  def test_void_tags
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<br>
+<hr>
+HTML
+<br>
+<hr>
+TEMPLATE
+  end
 end

@@ -39,6 +39,7 @@ module Himl
       ERB_TAG = 'HIML_ERB_TAG'
       ERB_TAG_REGEXP = /<%(?:=|==|-|#|%)?(.*?)(?:[-=])?%>/
       BLOCK_REGEXP = /\s*((\s+|\))do|\{)(\s*\|[^|]*\|)?\s*\Z/
+      VOID_TAGS = %w(br hr).freeze  #TODO: more tags
 
       attr_accessor :context
 
@@ -67,7 +68,7 @@ module Himl
 
         close_tags unless name == ROOT_NODE
 
-        @tags << Tag.new(name, current_indentation, current_line)
+        @tags << Tag.new(name, current_indentation, current_line) unless VOID_TAGS.include? name.downcase
       end
 
       def end_element(name)
