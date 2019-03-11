@@ -109,7 +109,7 @@ module Himl
         @current_tag = nil
         close_tags
 
-        raise SyntaxError if @tags.last.name != ROOT_NODE
+        raise SyntaxError, "Unclosed tag: #{@tags.last}" if @tags.last.name != ROOT_NODE
       end
 
       private
