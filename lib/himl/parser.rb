@@ -73,7 +73,8 @@ module Himl
         return if last_tag.name == ROOT_NODE
 
         if (name == ERB_TAG) && last_tag.is_a?(ErbEndMarker)
-          raise SyntaxError if last_tag.indentation != @tags[-2].indentation
+          raise SyntaxError "end of block indentation mismatch at line: #{current_line}, column: #{current_indentation}" if last_tag.indentation != @tags[-2].indentation
+
           @tags.pop
           @tags.pop
         end
