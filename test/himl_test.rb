@@ -142,4 +142,21 @@ HTML
 <% } %>
 TEMPLATE
   end
+
+  def test_blank_line_before_dedent
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<div id="a">
+  <div id="b">
+  </div>
+</div>
+
+<div id="c">
+</div>
+HTML
+<div id="a">
+  <div id="b">
+
+<div id="c">
+TEMPLATE
+  end
 end

@@ -123,12 +123,16 @@ module Himl
         (context.column == 1) && (context.line > 1) ? context.line - 2 : context.line - 1
       end
 
+      def last_non_empty_line
+        @lines[0, current_line].each_with_index.reverse_each {|str, i| break i + 1 unless str.chomp.empty? }
+      end
+
       def close_tags
         while (@tags.last.name != ROOT_NODE) && (current_indentation <= @tags.last.indentation)
           if (@current_tag == ERB_TAG) && (ErbBlockStartMarker === @tags.last) && (@tags.last.indentation == current_indentation)
             break
           else
-            @end_tags << [current_line, @tags.last.end_tag]
+            @end_tags << [last_non_empty_line, @tags.last.end_tag]
             @tags.pop
           end
         end
