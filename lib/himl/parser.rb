@@ -63,7 +63,9 @@ module Himl
       end
 
       def start_element(name, *)
-        close_tags unless (name == ROOT_NODE) || ((name == ERB_TAG) && @tags.last.has_block?)
+        @current_tag = name
+
+        close_tags unless name == ROOT_NODE
 
         @tags << Tag.new(name, current_indentation, current_line)
       end
@@ -104,6 +106,7 @@ module Himl
       end
 
       def close_document!
+        @current_tag = nil
         close_tags
 
         raise SyntaxError if @tags.last.name != ROOT_NODE
@@ -122,8 +125,12 @@ module Himl
 
       def close_tags
         while (@tags.last.name != ROOT_NODE) && (current_indentation <= @tags.last.indentation)
-          @end_tags << [current_line, @tags.last.end_tag]
-          @tags.pop
+          if (@current_tag == ERB_TAG) && (ErbBlockStartMarker === @tags.last) && (@tags.last.indentation == current_indentation)
+            break
+          else
+            @end_tags << [current_line, @tags.last.end_tag]
+            @tags.pop
+          end
         end
       end
     end

@@ -118,6 +118,21 @@ HTML
 TEMPLATE
   end
 
+  def test_erb_with_block_with_end_2
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<% @users.each do |user| %>
+  <p>
+    <%= user.name %>
+  </p>
+<% end %>
+HTML
+<% @users.each do |user| %>
+  <p>
+    <%= user.name %>
+<% end %>
+TEMPLATE
+  end
+
   def test_erb_with_curly_block_with_end
     assert_equal <<-HTML, parse(<<-TEMPLATE)
 <% @users.each {|user| %>
