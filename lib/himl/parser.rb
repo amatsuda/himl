@@ -103,14 +103,9 @@ module Himl
         end
       end
 
-      def close_tags
-        while (@tags.last.name != ROOT_NODE) && (current_indentation <= @tags.last.indentation)
-          @end_tags << [current_line, @tags.last.end_tag]
-          @tags.pop
-        end
-      end
+      def close_document!
+        close_tags
 
-      def verify!
         raise SyntaxError if @tags.last.name != ROOT_NODE
       end
 
@@ -123,6 +118,13 @@ module Himl
 
       def current_line
         (context.column == 1) && (context.line > 1) ? context.line - 2 : context.line - 1
+      end
+
+      def close_tags
+        while (@tags.last.name != ROOT_NODE) && (current_indentation <= @tags.last.indentation)
+          @end_tags << [current_line, @tags.last.end_tag]
+          @tags.pop
+        end
       end
     end
 
@@ -143,9 +145,7 @@ module Himl
         @document.context = ctx
       end
 
-      @document.close_tags
-
-      @document.verify!
+      @document.close_document!
     end
   end
 end
