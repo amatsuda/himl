@@ -169,4 +169,15 @@ HTML
 <hr>
 TEMPLATE
   end
+
+  def test_if
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<% if true %>
+  TRUE
+<% end %>
+HTML
+<% if true %>
+  TRUE
+TEMPLATE
+  end
 end

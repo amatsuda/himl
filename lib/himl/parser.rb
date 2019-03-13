@@ -44,6 +44,8 @@ module Himl
       # Copied from Haml
       MID_BLOCK_KEYWORDS = %w[else elsif rescue ensure end when]
       START_BLOCK_KEYWORDS = %w[if begin case unless]
+      START_BLOCK_KEYWORD_REGEX = /(?:\w+(?:,\s*\w+)*\s*=\s*)?(#{START_BLOCK_KEYWORDS.join('|')})/
+      BLOCK_KEYWORD_REGEX = /^-?\s*(?:(#{MID_BLOCK_KEYWORDS.join('|')})|#{START_BLOCK_KEYWORD_REGEX.source})\b/
 
       attr_accessor :context
 
@@ -102,6 +104,9 @@ module Himl
           when 'end', '}'
             @tags.pop
             @tags << ErbEndMarker.new(nil, last_tag.indentation, last_tag.line)
+          when BLOCK_KEYWORD_REGEX
+            @tags.pop
+            @tags << ErbBlockStartMarker.new(nil, last_tag.indentation, last_tag.line, 'end')
           end
         end
 
