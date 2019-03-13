@@ -41,6 +41,10 @@ module Himl
       BLOCK_REGEXP = /\s*((\s+|\))do|\{)(\s*\|[^|]*\|)?\s*\Z/
       VOID_TAGS = %w(br hr).freeze  #TODO: more tags
 
+      # Copied from Haml
+      MID_BLOCK_KEYWORDS = %w[else elsif rescue ensure end when]
+      START_BLOCK_KEYWORDS = %w[if begin case unless]
+
       attr_accessor :context
 
       def initialize(template)
