@@ -6,7 +6,7 @@ class HimlErrorTest < Test::Unit::TestCase
   private def parse(template)
     parser = Himl::Parser.new
     parser.call(template)
-    parser.to_html
+    parser.to_erb
   end
 
   private def assert_syntax_error(message = '', &block)

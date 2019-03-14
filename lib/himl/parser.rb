@@ -129,7 +129,7 @@ module Himl
       parse_template template
     end
 
-    def to_html
+    def to_erb
       @document.erb_template
     end
 
