@@ -37,7 +37,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency 'nokogiri'
-  spec.add_dependency 'rails'
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency 'rake'
