@@ -39,7 +39,7 @@ module Himl
       ERB_TAG = 'HIML_ERB_TAG'
       ERB_TAG_REGEXP = /<%(?:=|==|-|#|%)?(.*?)(?:[-=])?%>/
       BLOCK_REGEXP = /\s*((\s+|\))do|\{)(\s*\|[^|]*\|)?\s*\Z/
-      VOID_TAGS = %w(br hr).freeze  #TODO: more tags
+      VOID_TAGS = %w(area base br col command embed hr img input keygen link meta param source track wbr).freeze  # https://www.w3.org/TR/2011/WD-html-markup-20110113/syntax.html#syntax-elements
 
       # Copied from Haml
       MID_BLOCK_KEYWORDS = %w[else elsif rescue ensure end when]
