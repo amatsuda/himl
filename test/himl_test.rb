@@ -181,6 +181,25 @@ HTML
 TEMPLATE
   end
 
+  def test_else
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<% if one %>
+  1
+<% elsif two %>
+  2
+<% else %>
+  3
+<% end %>
+HTML
+<% if one %>
+  1
+<% elsif two %>
+  2
+<% else %>
+  3
+TEMPLATE
+  end
+
   def test_real_scaffold_index
     assert_equal <<-HTML, parse(<<-TEMPLATE)
 <p id="notice"><%= notice %></p>

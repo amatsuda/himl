@@ -106,6 +106,7 @@ module Himl
             @tags << ErbEndMarker.new(nil, last_tag.indentation, last_tag.line)
           when BLOCK_KEYWORD_REGEX
             @tags.pop
+            @tags.pop if (ErbBlockStartMarker === @tags.last) && (@tags.last.indentation == last_tag.indentation)
             @tags << ErbBlockStartMarker.new(nil, last_tag.indentation, last_tag.line, 'end')
           end
         end
