@@ -24,7 +24,7 @@ HTML has tags. HTML has indentations. Why can't we just use them?
 ## Syntax
 
 Himl syntax is a hybrid of ERB and Haml.
-Himl is besically just a kind of ERB. Indeed, Himl documents are compiled to ERB internally, then rendered by the ERB handler.
+Himl is basically just a kind of ERB. Indeed, Himl documents are compiled to ERB internally, then rendered by the ERB handler.
 
 So, the following Himl template opening and closing a tag will be compiled to exactly the same ERB template.
 
