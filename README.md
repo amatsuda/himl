@@ -120,7 +120,7 @@ ERB
 
 ## Example
 
-Following is a comparison of ERB, Haml, and Himl templates that renderes similar HTML results (the Haml example is taken from the [Haml documentation](http://haml.info/)).
+Following is a comparison of ERB, Haml, and Himl templates that renders similar HTML results (the Haml example is taken from the [Haml documentation](http://haml.info/)).
 You'll notice that Himl consumes the same LOC with the Haml version for expressing the structure of this document, without introducing any new syntax from the ERB version.
 
 ### ERB Template
