@@ -169,6 +169,8 @@ module Himl
       end
 
       @document.close_document!
+
+      self
     end
   end
 end

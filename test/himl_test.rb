@@ -4,9 +4,7 @@ require 'test_helper'
 
 class HimlTest < Test::Unit::TestCase
   private def parse(template)
-    parser = Himl::Parser.new
-    parser.call(template)
-    parser.to_erb
+    Himl::Parser.new.call(template).to_erb
   end
 
   def test_single_open_and_close
