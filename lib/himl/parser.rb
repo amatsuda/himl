@@ -127,8 +127,9 @@ module Himl
       private
 
       def current_indentation
-        line = @lines[current_line]
-        line.slice(0, context.column).rindex('<')
+        line = current_line
+        line -=1 until (ret = @lines[line].slice(0, context.column).rindex('<'))
+        ret
       end
 
       def current_line

@@ -198,6 +198,17 @@ HTML
 TEMPLATE
   end
 
+  def test_folded_tag
+    assert_equal <<-HTML, parse(<<-TEMPLATE)
+<div
+  class="c1">
+</div>
+HTML
+<div
+  class="c1">
+TEMPLATE
+  end
+
   def test_real_scaffold_index
     assert_equal <<-HTML, parse(<<-TEMPLATE)
 <p id="notice"><%= notice %></p>
