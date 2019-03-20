@@ -37,4 +37,11 @@ TEMPLATE
     <% end %>
 TEMPLATE
   end
+
+  def test_erb_end_mismatch_2
+    assert_syntax_error { parse(<<-TEMPLATE) }
+  <% if true %>
+<% end %>
+TEMPLATE
+  end
 end

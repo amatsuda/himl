@@ -85,7 +85,12 @@ module Himl
           raise SyntaxError, "end of block indentation mismatch at line: #{current_line}, column: #{current_indentation}" if last_tag.indentation != @tags[-2].indentation
 
           @tags.pop
-          @tags.pop
+
+          if (ErbBlockStartMarker === @tags.last) && (@tags.last.indentation == last_tag.indentation)
+            @tags.pop
+          else
+            raise SyntaxError, "end of block mismatch at line: #{current_line}, column: #{current_indentation}" unless (ErbBlockStartMarker === @tags.last) && (@tags.last.indentation == last_tag.indentation)
+          end
         end
 
         if name == last_tag.name
