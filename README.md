@@ -5,7 +5,7 @@ Himl is an HTML-based Indented Markup Language for Ruby.
 
 ## What's This?
 
-Himl is a yet another template engine for Haml-lovers and non Haml lovers, deriving HTML validity from Haml and syntax intuitiveness from ERB.
+Himl is a yet another template engine for Haml-lovers and non Haml-lovers, deriving HTML validity from Haml and syntax intuitiveness from ERB.
 
 
 ## Motivation
@@ -86,6 +86,49 @@ ERB
 </section>
 ```
 
+Ruby blocks in the ERB tag can also automatically be closed.
+
+Himl
+```erb
+<ul>
+  <%= @users.each do |user| %>
+    <li>
+      <%= user.name %>
+```
+
+ERB
+```erb
+<ul>
+  <%= @users.each do |user| %>
+    <li>
+      <%= user.name %>
+    </li>
+  <% end %>
+</ul>
+```
+
+Or manually be closed.
+
+Himl
+```erb
+<ul>
+  <%= @users.each do |user| %>
+    <li>
+      <%= user.name %>
+  <% end %>
+```
+
+ERB
+```erb
+<ul>
+  <%= @users.each do |user| %>
+    <li>
+      <%= user.name %>
+    </li>
+  <% end %>
+</ul>
+```
+
 You can open and close tags in the same line.
 
 Himl
@@ -115,6 +158,36 @@ ERB
   <div class="content">
   </div>
 </section>
+```
+
+More detailed syntax may be covered in [the tests](https://github.com/amatsuda/himl/blob/master/test/himl_test.rb).
+
+
+## Document Validations
+
+Himl's strongest advantage is not that you just can reduce the template LOC, but the engine validates the structure of the document and detects some syntax errors.
+For example, Himl raises `SyntaxError` while parsing these templates.
+
+Mismatched closing tag
+```erb
+<div>
+  hello?
+  </div>
+```
+
+Mismatched ERB `end` expression
+```erb
+  <% if @current_user.admin? %>
+    TOP SECRET
+<% end %>
+```
+
+Extra ERB `end` expression
+```erb
+<% @books.each do |book| %>
+  <% book.read %>
+<% end %>
+<% end %>
 ```
 
 
