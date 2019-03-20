@@ -11,10 +11,30 @@ class HimlErrorTest < Test::Unit::TestCase
     assert_raise SyntaxError, message, &block
   end
 
-  def test_close
+  def test_close_mismatch_1
     assert_syntax_error { parse(<<-TEMPLATE) }
 <div>
-  </div>
+      </div>
+TEMPLATE
+  end
+
+  def test_close_mismatch_2
+    assert_syntax_error { parse(<<-TEMPLATE) }
+  <div>
+</div>
+TEMPLATE
+  end
+
+  def test_erb_end_only
+    assert_syntax_error { parse(<<-TEMPLATE) }
+    <% end %>
+TEMPLATE
+  end
+
+  def test_erb_end_mismatch_1
+    assert_syntax_error { parse(<<-TEMPLATE) }
+<% if true %>
+    <% end %>
 TEMPLATE
   end
 end
