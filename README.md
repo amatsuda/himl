@@ -237,6 +237,34 @@ Bundle 'himl' gem to your project.
 The gem contains the Himl template handler for Rails.
 You need no extra configurations for your Rails app to render `*.himl` templates.
 
+## Tilt support
+
+The gem comes with [tilt](https://github.com/rtomayko/tilt) support and
+thus can be used with frameworks such as [Hanami](https://hanamirb.org).
+
+Use following `gem` line:
+
+```rb
+gem 'tilt' # if needed
+gem 'himl', require: 'himl/tilt'
+```
+
+Now you can render Himl templates via Tilt:
+
+```rb
+puts Tilt['himl'].new { <<TEMPLATE }.render(self, name: 'John')
+<div>
+  <h1>Hello, <%= name %></h1>
+TEMPALTE
+```
+
+and will get
+
+```html
+<div>
+  <h1>Hello, John</h1>
+</div>
+```
 
 ## Runtime Performance
 
