@@ -9,7 +9,7 @@ module Himl
     end
 
     def call(template, source)
-      erb = Himl::Parser.new(source).call(source).to_erb
+      erb = Himl::Parser.new.call(source).to_erb
 
       escape = ERB_HANDLER.respond_to?(:escape_ignore_list) ? ERB_HANDLER.escape_ignore_list.include?(template.type) : ERB_HANDLER.escape_whitelist.include?(template.type)
 
