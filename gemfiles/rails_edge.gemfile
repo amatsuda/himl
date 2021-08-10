@@ -12,5 +12,3 @@ end
 github 'rails/rails' do
   gem 'rails'
 end
-
-gem 'selenium-webdriver'
