@@ -13,19 +13,18 @@ jobs:
           - gemfiles/rails_70.gemfile
           - gemfiles/rails_61.gemfile
           - gemfiles/rails_60.gemfile
-          - gemfiles/rails_52.gemfile
+
+        include:
+          - ruby_version: '2.7'
+            gemfile: gemfiles/Gemfile.rails-5.2
+          - ruby_version: '2.6'
+            gemfile: gemfiles/Gemfile.rails-5.2
 
         exclude:
           - ruby_version: ruby-head
             gemfile: gemfiles/Gemfile.rails-6.0
-          - ruby_version: ruby-head
-            gemfile: gemfiles/Gemfile.rails-5.2
           - ruby_version: '3.1'
             gemfile: gemfiles/Gemfile.rails-6.0
-          - ruby_version: '3.1'
-            gemfile: gemfiles/Gemfile.rails-5.2
-          - ruby_version: '3.0'
-            gemfile: gemfiles/Gemfile.rails-5.2
           - ruby_version: '2.6'
             gemfile: gemfiles/rails_70.gemfile
           - ruby_version: '2.6'
